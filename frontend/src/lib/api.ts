@@ -1,4 +1,12 @@
-import type { ComplaintCreateResponse, ComplaintTicket, Ministry, MinistryDetail, Notice, Project } from "../types";
+import type {
+  ComplaintCreateResponse,
+  ComplaintTicket,
+  Ministry,
+  MinistryDetail,
+  Notice,
+  Project,
+  SourceRegistryResponse
+} from "../types";
 
 const API_BASE = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(/\/$/, "") ?? "http://localhost:4000";
 
@@ -61,6 +69,10 @@ export const api = {
   trackComplaint: async (ticketId: string): Promise<ComplaintTicket> => {
     const response = await fetchJson<Envelope<ComplaintTicket>>(`/api/v1/complaints/${encodeURIComponent(ticketId)}`);
     return response.data;
+  },
+
+  getSourceRegistry: async (): Promise<SourceRegistryResponse> => {
+    return fetchJson<SourceRegistryResponse>("/api/v1/sources");
   }
 };
 

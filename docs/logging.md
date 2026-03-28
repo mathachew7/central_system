@@ -87,6 +87,9 @@ Date context: `2026-03-28` local workspace session.
 32. Added Render Blueprint file (`render.yaml`) to deploy backend + frontend services from one repository.
 33. Wired cross-service environment variables for API base URL and CORS origin using Render default URLs.
 34. Added `frontend/.env.example` and updated `README.md` with full Render deployment instructions.
+35. Added `data/source-registry.yaml` containing a categorized national source registry with polling metadata.
+36. Implemented backend source registry APIs (`/api/v1/sources`, `/api/v1/sources/:category`, `/api/v1/sources/raw`).
+37. Implemented frontend `Sources` page and navigation wiring to browse/search registry entries in the live UI.
 ## Verification Snapshot
 
 - `npm run typecheck`: passed

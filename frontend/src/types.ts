@@ -56,3 +56,37 @@ export interface ComplaintTicket {
   createdAt: string;
   updatedAt: string;
 }
+
+export type SourceRegistryCategory =
+  | "federal_ministries"
+  | "constitutional_bodies"
+  | "regulatory_bodies"
+  | "judiciary"
+  | "security_services"
+  | "disaster_sources"
+  | "parliament"
+  | "provinces";
+
+export interface SourceRegistryEntry {
+  id: string;
+  name: string;
+  name_ne?: string;
+  base_url: string;
+  scraper_class: string;
+  endpoints?: Record<string, string>;
+  has_api?: boolean;
+  api_url?: string;
+  priority: 1 | 2 | 3;
+  poll_interval_mins: number;
+}
+
+export type SourceRegistryMap = Record<SourceRegistryCategory, SourceRegistryEntry[]>;
+
+export interface SourceRegistryResponse {
+  data: SourceRegistryMap;
+  meta: {
+    categoryCounts: { category: SourceRegistryCategory; count: number }[];
+    totalSources: number;
+    totalCategories: number;
+  };
+}

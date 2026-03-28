@@ -2121,6 +2121,58 @@ body {
   gap: 0.55rem;
 }
 
+.source-category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.source-category-card h3 {
+  font-size: 0.95rem;
+  color: #123255;
+  margin-bottom: 0.25rem;
+}
+
+.source-category-card p {
+  color: #4d6481;
+  font-size: 0.84rem;
+}
+
+.source-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.source-card {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.source-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.55rem;
+}
+
+.source-card-header h3 {
+  font-size: 0.96rem;
+  color: #0f2f57;
+}
+
+.source-name-ne {
+  color: #334e6f;
+  font-size: 0.83rem;
+  line-height: 1.4;
+}
+
+.source-meta-line {
+  font-size: 0.81rem;
+  color: #4d6481;
+}
+
 .admin-ministry-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -2507,7 +2559,9 @@ body {
   .stats-row,
   .record-grid,
   .ministry-grid,
-  .news-grid {
+  .news-grid,
+  .source-grid,
+  .source-category-grid {
     grid-template-columns: 1fr;
   }
 

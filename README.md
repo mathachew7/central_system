@@ -19,6 +19,9 @@ Backend and frontend foundation for a Nepal-focused transparency platform that c
   - `GET /api/v1/ministries/:slug`
   - `GET /api/v1/projects`
   - `GET /api/v1/notices`
+  - `GET /api/v1/sources`
+  - `GET /api/v1/sources/:category`
+  - `GET /api/v1/sources/raw`
   - `POST /api/v1/complaints`
   - `GET /api/v1/complaints/:ticketId`
   - `PATCH /api/v1/complaints/:ticketId/status` (requires `x-admin-api-key`)
@@ -45,6 +48,7 @@ Backend and frontend foundation for a Nepal-focused transparency platform that c
   - The White House page with platform information
   - Get Involved page for complaint submission and tracking
   - Contact page for support information
+  - Sources registry page for ministries, constitutional/regulatory bodies, judiciary, security, disaster, parliament, and provinces
   - API base configured via `VITE_API_BASE_URL`
 
 ## Process And Logs

@@ -61,3 +61,28 @@ export interface CreateComplaintInput {
   isAnonymous: boolean;
   contactEmail?: string;
 }
+
+export type SourceRegistryCategory =
+  | "federal_ministries"
+  | "constitutional_bodies"
+  | "regulatory_bodies"
+  | "judiciary"
+  | "security_services"
+  | "disaster_sources"
+  | "parliament"
+  | "provinces";
+
+export interface SourceRegistryEntry {
+  id: string;
+  name: string;
+  name_ne?: string;
+  base_url: string;
+  scraper_class: string;
+  endpoints?: Record<string, string>;
+  has_api?: boolean;
+  api_url?: string;
+  priority: 1 | 2 | 3;
+  poll_interval_mins: number;
+}
+
+export type SourceRegistry = Record<SourceRegistryCategory, SourceRegistryEntry[]>;

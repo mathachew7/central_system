@@ -8,6 +8,7 @@ interface LayoutProps {
 const navigation = [
   { path: "/", label: "Home" },
   { path: "/ministries", label: "Ministries" },
+  { path: "/sources", label: "Sources" },
   { path: "/news", label: "News & Notices" },
   { path: "/investments", label: "Projects" },
   { path: "/contact", label: "Contact" }
@@ -111,6 +112,9 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
             <ul>
               <li>
                 <Link to="/ministries">Ministries</Link>
+              </li>
+              <li>
+                <Link to="/sources">Sources Registry</Link>
               </li>
               <li>
                 <Link to="/news">News and Notices</Link>

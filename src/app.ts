@@ -83,7 +83,9 @@ export const createApp = (): express.Express => {
         health: "/healthz",
         readiness: "/readyz",
         metrics: "/metrics",
-        apiBase: "/api/v1"
+        apiBase: "/api/v1",
+        sources: "/api/v1/sources",
+        sourcesRaw: "/api/v1/sources/raw"
       }
     });
   });

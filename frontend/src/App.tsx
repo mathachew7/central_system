@@ -12,6 +12,7 @@ import NoticeDetailPage from "./pages/NoticeDetail";
 import ProjectDetailPage from "./pages/ProjectDetail";
 import SearchPage from "./pages/Search";
 import Contact from "./pages/Contact";
+import Sources from "./pages/Sources";
 
 export default function App(): JSX.Element {
   return (
@@ -28,6 +29,7 @@ export default function App(): JSX.Element {
           <Route path="/projects/:id" element={<ProjectDetailPage />} />
           <Route path="/notices/:id" element={<NoticeDetailPage />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/sources" element={<Sources />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/administration" element={<Navigate to="/ministries" replace />} />
           <Route path="/complaints" element={<Navigate to="/ministries" replace />} />

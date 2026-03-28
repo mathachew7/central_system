@@ -128,6 +128,14 @@ Build a production-quality backend baseline for the Nepal transparency platform 
 - Action: Updated `README.md` with Blueprint deployment steps, automatic env mappings, and free-tier behavior notes.
 - Why: Makes deployment repeatable for contributors and removes manual setup ambiguity.
 
+31. Add government-wide source registry dataset
+- Action: Added `data/source-registry.yaml` with categorized public sources (federal ministries, constitutional bodies, regulators, judiciary, security, disaster, parliament, provinces), including polling metadata and scraper hints.
+- Why: Centralizes official-source configuration and creates a single truth source for future ingestion automation.
+
+32. Expose source registry through API and frontend
+- Action: Added backend source-registry loader, new routes under `/api/v1/sources`, and a frontend “Sources” page with category summaries and searchable source cards.
+- Why: Makes the source catalog directly usable in the platform, not only stored as static configuration.
+
 ## Current Constraints
 
 - Data persistence is currently in-memory.
