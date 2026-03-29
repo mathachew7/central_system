@@ -1,5 +1,6 @@
 import { env } from "./config/env.js";
 import { logger } from "./core/logger.js";
+import { warmGovernmentAgendaCache } from "./routes/government-agenda.js";
 import { createApp } from "./app.js";
 import { initializeTracing, shutdownTracing } from "./observability/tracing.js";
 
@@ -10,6 +11,7 @@ const startServer = async (): Promise<void> => {
 
   const server = app.listen(env.PORT, () => {
     logger.info({ port: env.PORT, environment: env.NODE_ENV }, "Server started");
+    void warmGovernmentAgendaCache();
   });
 
   const shutdown = async (signal: NodeJS.Signals): Promise<void> => {

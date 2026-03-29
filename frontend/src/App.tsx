@@ -23,7 +23,7 @@ export default function App(): JSX.Element {
           <Route path="/news" element={<News />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/livestream" element={<Livestream />} />
-          <Route path="/investments" element={<Investments />} />
+          <Route path="/government-agenda" element={<Investments />} />
           <Route path="/ministries" element={<Ministries />} />
           <Route path="/ministries/:slug" element={<MinistryDetailPage />} />
           <Route path="/projects/:id" element={<ProjectDetailPage />} />
@@ -31,6 +31,7 @@ export default function App(): JSX.Element {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/sources" element={<Sources />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/investments" element={<Navigate to="/government-agenda" replace />} />
           <Route path="/administration" element={<Navigate to="/ministries" replace />} />
           <Route path="/complaints" element={<Navigate to="/ministries" replace />} />
         </Routes>

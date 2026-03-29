@@ -90,3 +90,69 @@ export interface SourceRegistryResponse {
     totalCategories: number;
   };
 }
+
+export type GovernmentAgendaStatus = "not-started" | "in-progress" | "completed" | "broken" | "stalled";
+
+export interface GovernmentAgendaCategory {
+  id: string;
+  ne: string;
+  en: string;
+}
+
+export interface GovernmentAgendaStatusConfig {
+  ne: string;
+  en: string;
+  color: string;
+}
+
+export interface GovernmentAgendaDetail {
+  description?: string;
+  impact?: string;
+  whyNeeded?: string;
+}
+
+export interface GovernmentAgendaItem {
+  id: number;
+  category: string;
+  categoryNe: string;
+  categoryEn: string;
+  titleNe: string;
+  titleEn: string;
+  deadline: string;
+  deadlineDate: string;
+  status: GovernmentAgendaStatus;
+  progress: number;
+  lastUpdated: string;
+  evidence?: string;
+  notes?: string;
+  details: GovernmentAgendaDetail | null;
+}
+
+export interface GovernmentAgendaTrackerResponse {
+  source: {
+    platformName: string;
+    homepageUrl: string;
+    promisesUrl: string;
+    detailsUrl: string;
+    appUrl: string;
+    fetchedAt: string;
+  };
+  plan: {
+    startAt: string;
+    endAt: string;
+    totalDays: number | null;
+  };
+  categories: GovernmentAgendaCategory[];
+  statusConfig: Record<GovernmentAgendaStatus, GovernmentAgendaStatusConfig>;
+  stats: {
+    total: number;
+    completed: number;
+    inProgress: number;
+    broken: number;
+    stalled: number;
+    notStarted: number;
+    overallProgress: number;
+    lastUpdated: string | null;
+  };
+  promises: GovernmentAgendaItem[];
+}

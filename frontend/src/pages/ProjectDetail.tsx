@@ -91,7 +91,7 @@ export default function ProjectDetailPage(): JSX.Element {
           <a href={project.sourceUrl} target="_blank" rel="noreferrer" className="btn btn-primary">
             Open Original Source
           </a>
-          <Link to="/investments" className="btn btn-secondary">
+          <Link to="/government-agenda" className="btn btn-secondary">
             Back to Projects
           </Link>
         </div>

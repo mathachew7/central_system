@@ -10,7 +10,7 @@ const navigation = [
   { path: "/ministries", label: "Ministries" },
   { path: "/sources", label: "Sources" },
   { path: "/news", label: "News & Notices" },
-  { path: "/investments", label: "Projects" },
+  { path: "/government-agenda", label: "Government Agenda" },
   { path: "/contact", label: "Contact" }
 ];
 

@@ -1,6 +1,7 @@
 import type {
   ComplaintCreateResponse,
   ComplaintTicket,
+  GovernmentAgendaTrackerResponse,
   Ministry,
   MinistryDetail,
   Notice,
@@ -73,6 +74,11 @@ export const api = {
 
   getSourceRegistry: async (): Promise<SourceRegistryResponse> => {
     return fetchJson<SourceRegistryResponse>("/api/v1/sources");
+  },
+
+  getGovernmentAgenda: async (): Promise<GovernmentAgendaTrackerResponse> => {
+    const response = await fetchJson<Envelope<GovernmentAgendaTrackerResponse>>("/api/v1/government-agenda");
+    return response.data;
   }
 };
 
