@@ -15,7 +15,17 @@ const CACHE_TTL_MS = 5 * 60 * 1000;
 const UPSTREAM_TIMEOUT_MS = 8_000;
 const SNAPSHOT_PATH = path.resolve(process.cwd(), "data", "government-agenda-cache.json");
 
-const trackerStatusSchema = z.enum(["not-started", "in-progress", "completed", "broken", "stalled"]);
+const knownTrackerStatuses = [
+  "not-started",
+  "in-progress",
+  "completed",
+  "broken",
+  "stalled",
+  "delayed",
+  "manifesto-only"
+] as const;
+
+const trackerStatusSchema = z.string().min(1);
 
 const trackerPromiseSchema = z.object({
   id: z.number().int().positive(),
@@ -46,7 +56,7 @@ const trackerCategorySchema = z.object({
 });
 
 const trackerStatusConfigSchema = z.record(
-  trackerStatusSchema,
+  z.string().min(1),
   z.object({
     ne: z.string().min(1),
     en: z.string().min(1),
@@ -57,6 +67,7 @@ const trackerStatusConfigSchema = z.record(
 type TrackerPromise = z.infer<typeof trackerPromiseSchema>;
 type TrackerDetail = z.infer<typeof trackerDetailSchema>;
 type TrackerCategory = z.infer<typeof trackerCategorySchema>;
+type KnownTrackerStatus = (typeof knownTrackerStatuses)[number];
 type TrackerStatus = z.infer<typeof trackerStatusSchema>;
 type TrackerStatusConfig = z.infer<typeof trackerStatusConfigSchema>;
 
@@ -82,6 +93,8 @@ interface GovernmentAgendaResponse {
     inProgress: number;
     broken: number;
     stalled: number;
+    delayed: number;
+    manifestoOnly: number;
     notStarted: number;
     overallProgress: number;
     lastUpdated: string | null;
@@ -119,6 +132,8 @@ const governmentAgendaResponseSchema = z.object({
     inProgress: z.number().int().nonnegative(),
     broken: z.number().int().nonnegative(),
     stalled: z.number().int().nonnegative(),
+    delayed: z.number().int().nonnegative(),
+    manifestoOnly: z.number().int().nonnegative(),
     notStarted: z.number().int().nonnegative(),
     overallProgress: z.number().min(0).max(100),
     lastUpdated: z.string().nullable()
@@ -146,6 +161,22 @@ const extractNumberConstant = (source: string, name: string): number | null => {
   if (!value) return null;
   const parsed = Number.parseInt(value, 10);
   return Number.isNaN(parsed) ? null : parsed;
+};
+
+const normalizeTrackerStatus = (status: string): TrackerStatus => {
+  if (status === "failed") return "broken";
+  return status;
+};
+
+const normalizeTrackerStatusConfig = (statusConfig: TrackerStatusConfig): TrackerStatusConfig => {
+  if (statusConfig.failed && !statusConfig.broken) {
+    return {
+      ...statusConfig,
+      broken: statusConfig.failed
+    };
+  }
+
+  return statusConfig;
 };
 
 const fetchUpstreamText = async (url: string): Promise<string> => {
@@ -210,14 +241,19 @@ const fetchFreshGovernmentAgenda = async (): Promise<GovernmentAgendaResponse> =
 
   const detailsPayload = extractConstValues<{ PROMISE_DETAILS: unknown }>(detailsSource, ["PROMISE_DETAILS"]);
 
-  const promises = z.array(trackerPromiseSchema).parse(promisesPayload.PROMISES);
+  const promises = z.array(trackerPromiseSchema).parse(promisesPayload.PROMISES).map((promise) => ({
+    ...promise,
+    status: normalizeTrackerStatus(promise.status)
+  }));
   const categories = z.array(trackerCategorySchema).parse(promisesPayload.CATEGORIES);
-  const statusConfig = trackerStatusConfigSchema.parse(promisesPayload.STATUS_CONFIG);
+  const statusConfig = normalizeTrackerStatusConfig(trackerStatusConfigSchema.parse(promisesPayload.STATUS_CONFIG));
   const detailsMap = z.record(z.string(), trackerDetailSchema).parse(detailsPayload.PROMISE_DETAILS);
 
-  const counts = promises.reduce<Record<TrackerStatus, number>>(
+  const counts = promises.reduce<Record<KnownTrackerStatus, number>>(
     (acc, promise) => {
-      acc[promise.status] += 1;
+      if (promise.status in acc) {
+        acc[promise.status as KnownTrackerStatus] += 1;
+      }
       return acc;
     },
     {
@@ -225,7 +261,9 @@ const fetchFreshGovernmentAgenda = async (): Promise<GovernmentAgendaResponse> =
       "in-progress": 0,
       completed: 0,
       broken: 0,
-      stalled: 0
+      stalled: 0,
+      delayed: 0,
+      "manifesto-only": 0
     }
   );
 
@@ -265,6 +303,8 @@ const fetchFreshGovernmentAgenda = async (): Promise<GovernmentAgendaResponse> =
       inProgress: counts["in-progress"],
       broken: counts.broken,
       stalled: counts.stalled,
+      delayed: counts.delayed,
+      manifestoOnly: counts["manifesto-only"],
       notStarted: counts["not-started"],
       overallProgress,
       lastUpdated
